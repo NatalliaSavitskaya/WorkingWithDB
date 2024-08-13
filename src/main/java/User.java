@@ -1,15 +1,17 @@
+import java.time.LocalDateTime;
+
 public class User {
 
     private int id;
     private String name;
-    private java.sql.Timestamp creationDate;
+    private LocalDateTime creationDate;
 
-    public User(String name, java.sql.Timestamp creationDate) {
+    public User(String name, LocalDateTime creationDate) {
         this.name = name;
         this.creationDate = creationDate;
     }
 
-    public User(int id, String name, java.sql.Timestamp creationDate) {
+    public User(int id, String name, LocalDateTime creationDate) {
         this.id = id;
         this.name = name;
         this.creationDate = creationDate;
@@ -19,7 +21,7 @@ public class User {
     public String getName () {
         return this.name;
     }
-    public java.sql.Timestamp getCreationDate () {
+    public LocalDateTime getCreationDate () {
         return this.creationDate;
     }
 

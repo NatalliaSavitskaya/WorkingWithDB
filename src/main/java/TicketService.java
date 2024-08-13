@@ -1,20 +1,21 @@
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 class TicketService {
     public static void main(String[] args) {
-        DAO dao = new DAO();
+        UserDAO userDAO = new UserDAO();
+        TicketDAO ticketDAO = new TicketDAO();
 
         // Saving user to the database
-        User user = new User("Christina Agile", new Timestamp(System.currentTimeMillis()));
-        dao.saveUser(user);
+        User user = new User("Christina Agile", LocalDateTime.now());
+        userDAO.saveUser(user);
 
         // Saving ticket to the database
-        Ticket ticket = new Ticket(2, "YEAR", new Timestamp(System.currentTimeMillis()));
-        dao.saveTicket(ticket);
+        Ticket ticket = new Ticket(14, "DAY", LocalDateTime.now());
+        ticketDAO.saveTicket(ticket);
 
         // Fetching user by ID
-        User isUser = dao.getUserById(5);
+        User isUser = userDAO.getUserById(14);
         if (isUser != null) {
             System.out.println("User found: " + isUser);
         } else {
@@ -22,7 +23,7 @@ class TicketService {
         }
 
         // Fetching ticket by ID
-        Ticket ticketById = dao.getTicketById(1);
+        Ticket ticketById = ticketDAO.getTicketById(15);
         if (ticketById != null) {
             System.out.println("Ticket found by ID: " + ticketById);
         } else {
@@ -30,7 +31,7 @@ class TicketService {
         }
 
         // Fetching tickets by user_ID
-        List<Ticket> ticketsByUserId = dao.getTicketsByUserId(1);
+        List<Ticket> ticketsByUserId = ticketDAO.getTicketsByUserId(14);
         if (!ticketsByUserId.isEmpty()) {
             System.out.println("Tickets found by user ID:");
             for (Ticket eachTicket : ticketsByUserId) {
@@ -41,7 +42,7 @@ class TicketService {
         }
 
         // Updating ticket type
-        boolean isUpdated = dao.updateTicketType(3, "MONTH");
+        boolean isUpdated = ticketDAO.updateTicketType(14, "MONTH");
         if (isUpdated) {
             System.out.println("Ticket type updated successfully.");
         } else {
@@ -49,7 +50,7 @@ class TicketService {
         }
 
         // Deleting user and his/her tickets
-        boolean isDeleted = dao.deleteUserById(1);
+        boolean isDeleted = userDAO.deleteUserById(14);
         if (isDeleted) {
             System.out.println("User and his/her tickets deleted successfully.");
         } else {
