@@ -1,60 +1,41 @@
-import java.time.LocalDateTime;
 import java.util.List;
 
-class TicketService {
-    public static void main(String[] args) {
-        UserDAO userDAO = new UserDAO();
-        TicketDAO ticketDAO = new TicketDAO();
+public class TicketService {
 
-        // Saving user to the database
-        User user = new User("Christina Agile", LocalDateTime.now());
+    private TicketDAO ticketDAO = new TicketDAO();
+    private UserDAO userDAO = new UserDAO();
+
+    public TicketService() {}
+
+    public void createTicket(Ticket ticket) { ticketDAO.saveTicket(ticket); }
+
+    public Ticket findTicket(String id) { return ticketDAO.getTicketById(id); }
+
+    public void updateTicket(Ticket ticket, String new_ticket_type) { ticketDAO.updateTicketType(ticket, new_ticket_type); }
+
+    public void updateTicketTypeByUserID(int userID, String ticket_type) { ticketDAO.updateTicketTypeByUserID(userID, ticket_type);}
+
+    public List<Ticket> findTicketsByUserId(int userID) {
+        return ticketDAO.getTicketsByUserId(userID);
+    }
+
+    public void deleteTicketsByUserID(int userID) { ticketDAO.deleteTicketsByUserId(userID); }
+
+    public void deleteUserAndTicketsByID(int userID) { ticketDAO.deleteUserAndTicketsByID(userID); }
+
+    public void createUser(User user) {
         userDAO.saveUser(user);
+    }
 
-        // Saving ticket to the database
-        Ticket ticket = new Ticket(14, "DAY", LocalDateTime.now());
-        ticketDAO.saveTicket(ticket);
+    public User findUser(String id) {
+        return userDAO.getUserById(id);
+    }
 
-        // Fetching user by ID
-        User isUser = userDAO.getUserById(14);
-        if (isUser != null) {
-            System.out.println("User found: " + isUser);
-        } else {
-            System.out.println("User not found.");
-        }
+    public void updateUserNameByID(User user, String new_name) {userDAO.updateUserNameByID(user, new_name);}
 
-        // Fetching ticket by ID
-        Ticket ticketById = ticketDAO.getTicketById(15);
-        if (ticketById != null) {
-            System.out.println("Ticket found by ID: " + ticketById);
-        } else {
-            System.out.println("Ticket not found by ID.");
-        }
+    public void updateUserAndTickets(int userId, String user_name, String ticket_type) { ticketDAO.updateUserAndTickets(userId, user_name, ticket_type);}
 
-        // Fetching tickets by user_ID
-        List<Ticket> ticketsByUserId = ticketDAO.getTicketsByUserId(14);
-        if (!ticketsByUserId.isEmpty()) {
-            System.out.println("Tickets found by user ID:");
-            for (Ticket eachTicket : ticketsByUserId) {
-                System.out.println(eachTicket);
-            }
-        } else {
-            System.out.println("No tickets found for the user ID.");
-        }
-
-        // Updating ticket type
-        boolean isUpdated = ticketDAO.updateTicketType(14, "MONTH");
-        if (isUpdated) {
-            System.out.println("Ticket type updated successfully.");
-        } else {
-            System.out.println("Ticket not found or update failed.");
-        }
-
-        // Deleting user and his/her tickets
-        boolean isDeleted = userDAO.deleteUserById(14);
-        if (isDeleted) {
-            System.out.println("User and his/her tickets deleted successfully.");
-        } else {
-            System.out.println("User not found or deletion failed.");
-        }
+    public void deleteUser(User user) {
+        userDAO.deleteUser(user);
     }
 }

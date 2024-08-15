@@ -1,18 +1,23 @@
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-public class User {
+@Entity
+@Table(name = "Users")
 
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    public User(String name, LocalDateTime creationDate) {
-        this.name = name;
-        this.creationDate = creationDate;
-    }
+    @Column(name = "name")
+    private String name;
 
-    public User(int id, String name, LocalDateTime creationDate) {
-        this.id = id;
+    public User () {}
+
+    public User(String name, LocalDateTime creationDate) {
         this.name = name;
         this.creationDate = creationDate;
     }
@@ -25,8 +30,16 @@ public class User {
         return this.creationDate;
     }
 
+    // setValues methods
+    public void setName (String name) {
+        this.name = name;
+    }
+    public void setCreationDate (LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public String toString() {
-        return "User{id=" + id + ", name='" + name + "', creationDate=" + creationDate + "}";
+        return "User name='" + name + "', creationDate=" + creationDate;
     }
 }

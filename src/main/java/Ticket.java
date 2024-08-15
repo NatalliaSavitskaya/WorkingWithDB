@@ -1,19 +1,26 @@
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Tickets")
+
 public class Ticket {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "user_id")
     private int userId;
-    private String ticketType;
+
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    public Ticket(int userId, String ticketType, LocalDateTime creationDate) {
-        this.userId = userId;
-        this.ticketType = ticketType;
-        this.creationDate = creationDate;
-    }
+    @Column(name = "ticket_type")
+    private String ticketType;
 
-    public Ticket(int id, int userId, String ticketType, LocalDateTime creationDate) {
-        this.id = id;
+    public Ticket() {}
+
+    public Ticket(int userId, String ticketType, LocalDateTime creationDate) {
         this.userId = userId;
         this.ticketType = ticketType;
         this.creationDate = creationDate;
@@ -29,6 +36,9 @@ public class Ticket {
     public LocalDateTime getCreationDate() {
         return this.creationDate;
     }
+
+    // setvalues methods
+    public void setTicketType(String ticket_type) { this.ticketType = ticket_type; }
 
     @Override
     public String toString() {
