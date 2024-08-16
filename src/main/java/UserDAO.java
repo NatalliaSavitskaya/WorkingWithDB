@@ -30,10 +30,10 @@ public class UserDAO {
     }
 
     // Update User name by ID
-    public void updateUserNameByID(User user, String  new_name) {
+    public void updateUserNameByID(User user, String  newName) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        user.setName(new_name);
+        user.setName(newName);
         session.update(user);
         transaction.commit();
         session.close();

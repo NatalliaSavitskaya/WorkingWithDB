@@ -38,10 +38,11 @@ public class Ticket {
     }
 
     // setvalues methods
-    public void setTicketType(String ticket_type) { this.ticketType = ticket_type; }
+    public void setTicketType(String ticketType) { this.ticketType = ticketType; }
 
     @Override
     public String toString() {
-        return "Ticket{id=" + id + ", userID='" + userId + "', ticketType=" + ticketType + ", creationDate=" + creationDate +"}";
+        return "Ticket{id=" + id + ", userID='" + userId + "', ticketType=" + ticketType + ", creationDate=" +
+                creationDate +"}";
     }
 }

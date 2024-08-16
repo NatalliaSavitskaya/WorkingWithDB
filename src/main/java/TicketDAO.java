@@ -23,33 +23,31 @@ public class TicketDAO {
     }
 
     // Update Ticket type
-    public void updateTicketType(Ticket ticket, String new_ticket_type) {
+    public void updateTicketType(Ticket ticket, String newTicketType) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        ticket.setTicketType(new_ticket_type);
+        ticket.setTicketType(newTicketType);
         session.update(ticket);
         transaction.commit();
         session.close();
     }
 
     // Fetch Tickets by User_ID
-    public List<Ticket> getTicketsByUserId(int userID) {
+    public List<Ticket> getTicketsByUserId(int userId) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
-        String sql = "SELECT * FROM public.tickets WHERE user_id = :userId";
-        Query<Ticket> query = session.createNativeQuery(sql, Ticket.class);
-        query.setParameter("userId", userID);
+        Query<Ticket> query = session.createNativeQuery(SqlQueries.GET_TICKET_BY_USER_ID, Ticket.class);
+        query.setParameter("userId", userId);
         return query.list();
     }
 
     // Delete Tickets by User_ID
-    public void deleteTicketsByUserId(int userID) {
+    public void deleteTicketsByUserId(int userId) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            String sql = "DELETE FROM public.tickets WHERE user_id = :userId";
-            Query<?> query = session.createNativeQuery(sql);
-            query.setParameter("userId", userID);
+            Query<?> query = session.createNativeQuery(SqlQueries.DELETE_TICKETS_BY_USER_ID);
+            query.setParameter("userId", userId);
             int result = query.executeUpdate();
             System.out.println("Deleted tickets count: " + result);
             transaction.commit();
@@ -77,12 +75,12 @@ public class TicketDAO {
     }
 
     // Update Tickets by user ID
-    public void updateTicketTypeByUserID(int userId, String ticket_type) {
+    public void updateTicketTypeByUserID(int userId, String newTicketType) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         List<Ticket> tickets = getTicketsByUserId(userId);
         for (Ticket ticket:tickets) {
-            ticket.setTicketType(ticket_type);
+            ticket.setTicketType(newTicketType);
             session.update(ticket);
         }
         transaction.commit();
@@ -90,15 +88,15 @@ public class TicketDAO {
     }
 
     // Update User and his/her tickets by ID
-    public void updateUserAndTickets(int userId, String user_name, String ticket_type) {
+    public void updateUserAndTickets(int userId, String newUserName, String newTicketType) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         User user = session.get(User.class, userId);
-        user.setName(user_name);
+        user.setName(newUserName);
         session.update(user);
         List<Ticket> tickets = getTicketsByUserId(userId);
         for (Ticket ticket:tickets) {
-            ticket.setTicketType(ticket_type);
+            ticket.setTicketType(newTicketType);
             session.update(ticket);
         }
         transaction.commit();

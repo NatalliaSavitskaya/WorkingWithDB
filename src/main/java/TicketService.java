@@ -11,17 +11,19 @@ public class TicketService {
 
     public Ticket findTicket(String id) { return ticketDAO.getTicketById(id); }
 
-    public void updateTicket(Ticket ticket, String new_ticket_type) { ticketDAO.updateTicketType(ticket, new_ticket_type); }
+    public void updateTicket(Ticket ticket, String newTicketType) { ticketDAO.updateTicketType(ticket, newTicketType); }
 
-    public void updateTicketTypeByUserID(int userID, String ticket_type) { ticketDAO.updateTicketTypeByUserID(userID, ticket_type);}
-
-    public List<Ticket> findTicketsByUserId(int userID) {
-        return ticketDAO.getTicketsByUserId(userID);
+    public void updateTicketTypeByUserID(int userId, String newTicketType) {
+        ticketDAO.updateTicketTypeByUserID(userId, newTicketType);
     }
 
-    public void deleteTicketsByUserID(int userID) { ticketDAO.deleteTicketsByUserId(userID); }
+    public List<Ticket> findTicketsByUserId(int userId) {
+        return ticketDAO.getTicketsByUserId(userId);
+    }
 
-    public void deleteUserAndTicketsByID(int userID) { ticketDAO.deleteUserAndTicketsByID(userID); }
+    public void deleteTicketsByUserID(int userId) { ticketDAO.deleteTicketsByUserId(userId); }
+
+    public void deleteUserAndTicketsByID(int userId) { ticketDAO.deleteUserAndTicketsByID(userId); }
 
     public void createUser(User user) {
         userDAO.saveUser(user);
@@ -31,9 +33,11 @@ public class TicketService {
         return userDAO.getUserById(id);
     }
 
-    public void updateUserNameByID(User user, String new_name) {userDAO.updateUserNameByID(user, new_name);}
+    public void updateUserNameByID(User user, String newName) {userDAO.updateUserNameByID(user, newName);}
 
-    public void updateUserAndTickets(int userId, String user_name, String ticket_type) { ticketDAO.updateUserAndTickets(userId, user_name, ticket_type);}
+    public void updateUserAndTickets(int userId, String userName, String newTicketType) {
+        ticketDAO.updateUserAndTickets(userId, userName, newTicketType);
+    }
 
     public void deleteUser(User user) {
         userDAO.deleteUser(user);
