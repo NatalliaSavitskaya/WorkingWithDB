@@ -1,16 +1,32 @@
+package myapp.services;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        TicketService ticketService = new TicketService();
+        TicketService ticketService = context.getBean(TicketService.class);
 
         // Create a new user
         User newUser = new User("Christina VeryNew", LocalDateTime.now());
         ticketService.createUser(newUser);
         System.out.println("User " + newUser + " saved successfully.");
+
+        // Create a new ticket
+        Ticket newTicket = new Ticket(5, "MONTH", LocalDateTime.now());
+        ticketService.createTicket(newTicket);
+        System.out.println("Ticket " + newTicket + " saved successfully.");
+
+        // Update TicketType by UserID
+        ticketService.updateTicketsTypeByUserID(3,"MONTH");
+
+        // Update User and all his/her Tickets
+        ticketService.updateUserAndTickets(5,"My_New_Name","YEAR");
 
         // Fetch User by ID
         User foundUser = ticketService.findUser("1");
@@ -28,11 +44,6 @@ public class Main {
         } else {
             System.out.println("User not found.");
         }
-
-        // Create a new ticket
-        Ticket newTicket = new Ticket(5, "MONTH", LocalDateTime.now());
-        ticketService.createTicket(newTicket);
-        System.out.println("Ticket " + newTicket + " saved successfully.");
 
         // Fetch Ticket by ID
         Ticket foundTicket = ticketService.findTicket("1");
@@ -61,12 +72,6 @@ public class Main {
             System.out.println("No tickets found for user ID.");
         }
 
-        // Delete Tickets by User ID
-        ticketService.deleteTicketsByUserID(4);
-
-        // Delete User and his/her Tickets by User ID
-        ticketService.deleteUserAndTicketsByID(4);
-
         // Update User_name by ID
         User updateUser = ticketService.findUser("5");
         if (updateUser != null) {
@@ -76,10 +81,10 @@ public class Main {
             System.out.println("User not found.");
         }
 
-        // Update TicketType by UserID
-        ticketService.updateTicketTypeByUserID(5,"YEAR");
+        // Delete Tickets by User ID
+        ticketService.deleteTicketsByUserID(4);
 
-        // Update User and all his/her Tickets
-        ticketService.updateUserAndTickets(5,"Again_New_Name","MONTH");
+        // Delete User and his/her Tickets by User ID
+        ticketService.deleteUserAndTicketsByID(5);
     }
 }

@@ -10,6 +10,12 @@ repositories {
 }
 
 dependencies {
+
+    implementation("org.springframework:spring-core:6.1.3")
+    implementation("org.springframework:spring-context:6.1.3")
+    implementation("org.springframework:spring-orm:6.0.0")
+    implementation("org.springframework:spring-tx:6.0.0")
+
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.5.2.Final")
 

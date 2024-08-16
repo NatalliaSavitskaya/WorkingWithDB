@@ -1,3 +1,5 @@
+package myapp.services;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
