@@ -1,15 +1,15 @@
 package myapp.services;
 
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UserDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
+
+    public UserDAO(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
 
     @Transactional(readOnly = true)
     public User getUserById(String id) {

@@ -1,6 +1,5 @@
 package myapp.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,11 +9,13 @@ import java.util.List;
 @Transactional
 public class TicketService {
 
-    @Autowired
-    private TicketDAO ticketDAO;
+    private final TicketDAO ticketDAO;
+    private final UserDAO userDAO;
 
-    @Autowired
-    private UserDAO userDAO;
+    public TicketService(TicketDAO ticketDAO, UserDAO userDAO) {
+        this.ticketDAO = ticketDAO;
+        this.userDAO = userDAO;
+    }
 
     public void createTicket(Ticket ticket) {ticketDAO.saveTicket(ticket);}
 
