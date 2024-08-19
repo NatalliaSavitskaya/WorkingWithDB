@@ -40,6 +40,9 @@ public class Ticket {
     }
 
     // setvalues methods
+    public void setId(int id) { this.id = id; }
+    public void setUserId(int userId) { this.userId = userId; }
+    public void setCreationDate(LocalDateTime creationDate) { this.creationDate = creationDate; }
     public void setTicketType(String ticketType) { this.ticketType = ticketType; }
 
     @Override

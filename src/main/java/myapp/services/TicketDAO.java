@@ -1,85 +1,74 @@
 package myapp.services;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import static myapp.services.SqlQueries.*;
 
 @Repository
 public class TicketDAO {
 
-    private final SessionFactory sessionFactory;
+    private final JdbcTemplate jdbcTemplate;
 
-    public TicketDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public TicketDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Transactional
     public void saveTicket(Ticket ticket) {
-        sessionFactory.getCurrentSession().save(ticket);
+        jdbcTemplate.update(SAVE_TICKET, ticket.getUserId(), ticket.getTicketType(), ticket.getCreationDate());
     }
 
-    @Transactional(readOnly = true)
-    public Ticket getTicketById(String id) {
-        return sessionFactory.getCurrentSession().get(Ticket.class, id);
+    public Ticket getTicketById(int id) {
+        return jdbcTemplate.queryForObject(GET_TICKET_BY_ID, new TicketRowMapper(), id);
     }
 
     @Transactional
-    public void updateTicketType(Ticket ticket, String newTicketType) {
-        ticket.setTicketType(newTicketType);
-        sessionFactory.getCurrentSession().update(ticket);
+    public void updateTicketType(int ticketId, String newTicketType) {
+        jdbcTemplate.update(UPDATE_TICKET_TYPE, newTicketType, ticketId);
     }
 
-    @Transactional(readOnly = true)
     public List<Ticket> getTicketsByUserId(int userId) {
-        return sessionFactory.getCurrentSession()
-                .createNativeQuery(SqlQueries.GET_TICKET_BY_USER_ID, Ticket.class)
-                .setParameter("userId", userId)
-                .getResultList();
+        return jdbcTemplate.query(GET_TICKETS_BY_USER_ID, new TicketRowMapper(), userId);
     }
 
     @Transactional
     public void deleteTicketsByUserId(int userId) {
-        sessionFactory.getCurrentSession()
-                .createNativeQuery(SqlQueries.DELETE_TICKETS_BY_USER_ID)
-                .setParameter("userId", userId)
-                .executeUpdate();
+        jdbcTemplate.update(DELETE_TICKETS_BY_USER_ID, userId);
     }
 
     @Transactional
     public void updateTicketsTypeByUserID(int userId, String newTicketType) {
-        Session session = sessionFactory.getCurrentSession();
-        List<Ticket> tickets = getTicketsByUserId(userId);
-        for (Ticket ticket : tickets) {
-            ticket.setTicketType(newTicketType);
-            session.update(ticket);
+        jdbcTemplate.update(UPDATE_TICKET_TYPE_BY_USER_ID, newTicketType, userId);
         }
-    }
 
     @Transactional
     public void updateUserAndTickets(int userId, String newUserName, String newTicketType) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = session.get(User.class, userId);
-        if (user != null) {
-            user.setName(newUserName);
-            session.update(user);
-        }
-        List<Ticket> tickets = getTicketsByUserId(userId);
-        for (Ticket ticket : tickets) {
-            ticket.setTicketType(newTicketType);
-            session.update(ticket);
-        }
+        jdbcTemplate.update(UPDATE_USER_NAME_BY_ID, newUserName, userId);
+        jdbcTemplate.update(UPDATE_TICKET_TYPE, newTicketType, userId);
     }
 
     @Transactional
     public void deleteUserAndTicketsByID(int userId) {
-        Session session = sessionFactory.getCurrentSession();
-        deleteTicketsByUserId(userId);
-        User user = session.get(User.class, userId);
-        if (user != null) {
-            session.delete(user);
+        jdbcTemplate.update(DELETE_USER, userId);
+        jdbcTemplate.update(DELETE_TICKETS_BY_USER_ID, userId);
+    }
+
+    private static class TicketRowMapper implements RowMapper<Ticket> {
+        @Override
+        public Ticket mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Ticket ticket = new Ticket();
+            ticket.setId(rs.getInt("id"));
+            ticket.setUserId(rs.getInt("user_id"));
+            ticket.setTicketType(rs.getString("ticket_type"));
+            ticket.setCreationDate(rs.getTimestamp("creation_date").toLocalDateTime());
+            return ticket;
         }
     }
 }

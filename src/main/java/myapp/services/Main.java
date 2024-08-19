@@ -29,7 +29,7 @@ public class Main {
         ticketService.updateUserAndTickets(5,"My_New_Name","YEAR");
 
         // Fetch User by ID
-        User foundUser = ticketService.findUser("1");
+        User foundUser = ticketService.findUser(1);
         if (foundUser != null) {
             System.out.println(foundUser);
         } else {
@@ -37,16 +37,10 @@ public class Main {
         }
 
         // Delete User by ID
-        User deleteUser = ticketService.findUser("1");
-        ticketService.deleteUser(deleteUser);
-        if (deleteUser != null) {
-            System.out.println("User " + deleteUser + " was deleted.");
-        } else {
-            System.out.println("User not found.");
-        }
+        ticketService.deleteUser(1);
 
         // Fetch Ticket by ID
-        Ticket foundTicket = ticketService.findTicket("1");
+        Ticket foundTicket = ticketService.findTicket(1);
         if (foundTicket != null) {
             System.out.println(foundTicket);
         } else {
@@ -54,9 +48,9 @@ public class Main {
         }
 
         // Update Ticket_type
-        Ticket updateTicket = ticketService.findTicket("1");
+        Ticket updateTicket = ticketService.findTicket(1);
         if (updateTicket != null) {
-            ticketService.updateTicket(updateTicket, "DAY");
+            ticketService.updateTicket(1, "DAY");
             System.out.println("Ticket " + updateTicket + " updated successfully.");
         } else {
             System.out.println("Ticket not found.");
@@ -73,9 +67,9 @@ public class Main {
         }
 
         // Update User_name by ID
-        User updateUser = ticketService.findUser("5");
+        User updateUser = ticketService.findUser(5);
         if (updateUser != null) {
-            ticketService.updateUserNameByID(updateUser, "New name");
+            ticketService.updateUserNameByID(5, "New name");
             System.out.println("User " + updateUser + " updated successfully.");
         } else {
             System.out.println("User not found.");
